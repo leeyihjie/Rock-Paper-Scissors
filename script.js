@@ -1,90 +1,105 @@
 // Functions go in script.js instead of in index.html
 
+let playerScore = 0;
+let computerScore = 0;
+let winner = '';
+
+
+const rockBtn = document.querySelector('#rock');
+const paperBtn = document.querySelector('#paper');
+const scissorsBtn = document.querySelector('#scissors');
+const playerScoreP = document.querySelector('#playerscore');
+const computerScoreP = document.querySelector('#computerscore');
+const resultP = document.querySelector('#roundresult');
+const totalResultH1 = document.querySelector('#totalresult');
+
+rockBtn.addEventListener('click', function() {
+    PlayOneRound('ROCK');
+})
+
+paperBtn.addEventListener('click', function() {
+    PlayOneRound('PAPER');
+})
+
+scissorsBtn.addEventListener('click', function() {
+    PlayOneRound('SCISSORS');
+})
 
 
 function getComputerChoice() {
-    choice = Math.floor(Math.random() * 3);
+    var choice = Math.floor(Math.random() * 3);
     if (choice == 0) {
-        move = "paper";
+        var compMove = "ROCK";
     } else if (choice == 1){
-        move = "rock";
+        compMove = "PAPER";
+    } else {
+        compMove = "SCISSORS";
+    }
+    return compMove;
+}
+
+function getResult(playerS, computerS) {
+    if (playerS == 'ROCK' && computerS == 'PAPER') {
+        resultP.textContent = `You played ${playerS}, Computer played ${computerS}. 
+        You lose!`;
+        return "LOSS";
+    }
+    else if (playerS == 'ROCK' && computerS == 'SCISSORS') {
+        resultP.textContent = `You played ${playerS}, Computer played ${computerS}. 
+        You win!`;
+        return "WIN";
+    }
+    else if (playerS == 'PAPER' && computerS == 'SCISSORS') {
+        resultP.textContent = `You played ${playerS}, Computer played ${computerS}. 
+        You lose!`;
+        return "LOSS";
+    }
+    else if (playerS == 'PAPER' && computerS == 'ROCK') {
+        resultP.textContent = `You played ${playerS}, Computer played ${computerS}. 
+        You win!`;
+        return "WIN";
+    }
+    else if (playerS == 'SCISSORS' && computerS == 'ROCK') {
+        resultP.textContent = `You played ${playerS}, Computer played ${computerS}. 
+        You lose!`;
+        return "LOSS";
+    }
+    else if (playerS == 'SCISSORS' && computerS == 'PAPER') {
+        resultP.textContent = `You played ${playerS}, Computer played ${computerS}. 
+        You win!`;
+        return "WIN";
     }
     else {
-        move = "scissors";
-    }
-
-    return move;
+        resultP.textContent = `You played ${playerS}, Computer played ${computerS}. 
+        It's a draw!`;
+        return "DRAW";
+    };
 }
 
-function getPlayerChoice() {
-    playerChoice = prompt("Choose rock, paper or scissors");
-    playerChoiceLower =  playerChoice.toLowerCase();
-    while(playerChoiceLower != 'rock' && playerChoiceLower != 'paper' && playerChoiceLower != 'scissors') {
-        console.log("Please input either Rock, Paper or Scissors only");
-        getPlayerChoice();
-    }
-    return playerChoiceLower;
-}
+function PlayOneRound(playerSelection) {
+    compSelection = getComputerChoice();
+    var result = getResult(playerSelection, compSelection);
+    console.log(result);
 
-function PlayOneRound(playerSelection, computerSelection) {
-    while (playerSelection != computerSelection) {
-        if (playerSelection == 'rock' && computerSelection == 'paper') {
-            console.log("You Lose! Paper beats Rock");
-            return "computer";
-        }
-        else if (playerSelection == 'rock' && computerSelection == 'scissors') {
-            console.log("You Win! Rock beats Scissors");
-            return "player";
-        }
-        else if (playerSelection == 'paper' && computerSelection == 'rock') {
-            console.log("You Win! Paper beats Rock");
-            return "player";
-        }
-        else if (playerSelection == 'paper' && computerSelection == 'scissors') {
-            console.log("You Lose! Scissors beats Paper");
-            return "computer";
-        }
-        else if (playerSelection == 'scissors' && computerSelection == 'paper') {
-            console.log("You Win! Scissors beats Paper");
-            return "player";
-        }
-        else if (playerSelection == 'scissors' && computerSelection == 'rock') {
-            console.log("You Lose! Rock beats Scissors");
-            return "computer";
-        }
+    if (result == 'WIN') {
+        playerScore += 1;
     }
-    console.log("It's a Draw! Try again!");
-    return "tie";
-}
+    else if (result == 'LOSS') {
+        computerScore += 1;
+    }
+    playerScoreP.textContent = `Player Score: ${playerScore}`;
+    computerScoreP.textContent = `Computer Score: ${computerScore}`;
 
-function PlayGame() {
-    console.log("Beat the Computer 5 times to win!")
-    let playerScore = 0;
-    let computerScore = 0;
-    let winner = '';
+    // console.log("Playerscore: " + playerScore)
+    // console.log("Computerscore: " + computerScore)
 
-    while(playerScore < 5 && computerScore < 5) {
-        console.log("Current Score: Player = " + playerScore + ", Computer = " + computerScore)
-        CompChoice = getComputerChoice();
-        PlayChoice = getPlayerChoice();
-        
-        result = PlayOneRound(PlayChoice, CompChoice);
-        if (result == 'player') {
-            playerScore += 1;
-        }
-        else if (result == 'computer') {
-            computerScore += 1;
-        }
+    if (playerScore == 5) {
+        totalResultH1.textContent = `You have won! :D`;
+        // console.log("You have won! :D");
     }
-    if (playerScore > computerScore) {
-        console.log("You have won! :D");
-        winner = "Player";
+    else if (computerScore == 5) {
+        totalResultH1.textContent = `You have lost! Try again next time! :(`;
+        // console.log("You have lost! Try again next time! :(");
     }
-    else {
-        console.log("You have lost! Try again next time! :(");
-        console.log("Final Score: Player = " + playerScore + ", Computer = " + computerScore)
-        winner = "AI";
-    }
-}
-
-PlayGame();
+};
+/* ----------------------------------------------------- */
