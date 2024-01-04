@@ -90,16 +90,10 @@ function PlayOneRound(playerSelection) {
     playerScoreP.textContent = `Player Score: ${playerScore}`;
     computerScoreP.textContent = `Computer Score: ${computerScore}`;
 
-    // console.log("Playerscore: " + playerScore)
-    // console.log("Computerscore: " + computerScore)
-
     if (playerScore == 5) {
         totalResultH1.textContent = `You have won! :D`;
-        // console.log("You have won! :D");
     }
     else if (computerScore == 5) {
         totalResultH1.textContent = `You have lost! Try again next time! :(`;
-        // console.log("You have lost! Try again next time! :(");
     }
 };
-/* ----------------------------------------------------- */
